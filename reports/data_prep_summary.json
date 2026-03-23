@@ -1,0 +1,47 @@
+{
+  "initial_shape": [
+    48895,
+    16
+  ],
+  "final_shape": [
+    48884,
+    19
+  ],
+  "train_shape": [
+    34218,
+    19
+  ],
+  "val_shape": [
+    7333,
+    19
+  ],
+  "test_shape": [
+    7333,
+    19
+  ],
+  "rows_removed_price_le_0": 11,
+  "missing_after_cleaning": {
+    "id": 0,
+    "name": 0,
+    "host_id": 0,
+    "host_name": 0,
+    "neighbourhood_group": 0,
+    "neighbourhood": 0,
+    "latitude": 0,
+    "longitude": 0,
+    "room_type": 0,
+    "price": 0,
+    "minimum_nights": 0,
+    "number_of_reviews": 0,
+    "last_review": 10051,
+    "reviews_per_month": 0,
+    "calculated_host_listings_count": 0,
+    "availability_365": 0,
+    "days_since_last_review": 0,
+    "has_last_review": 0,
+    "target": 0
+  },
+  "target_column": "target",
+  "business_target_column": "price",
+  "max_last_review_date": "2019-07-08"
+}
