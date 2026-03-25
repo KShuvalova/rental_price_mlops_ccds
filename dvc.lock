@@ -1,0 +1,58 @@
+schema: '2.0'
+stages:
+  prepare:
+    cmd: python -m rental_price_mlops.dataset
+    deps:
+    - path: data/raw/AB_NYC_2019.csv
+      hash: md5
+      md5: f772a1d8d29bae6e7a9beac0ae880a2b
+      size: 7077973
+    - path: rental_price_mlops/dataset.py
+      hash: md5
+      md5: c71758f2ec5ba65274fd7542faa6bdd9
+      size: 3735
+    outs:
+    - path: data/processed/test.parquet
+      hash: md5
+      md5: 7710d01a9ae19ab406c985975a366350
+      size: 543043
+    - path: data/processed/train.parquet
+      hash: md5
+      md5: c162f9f4ccd7ad59d095f74ac2333709
+      size: 2208435
+    - path: data/processed/val.parquet
+      hash: md5
+      md5: 95afb5a22ef09b33dc6947fcf16d98d7
+      size: 550161
+    - path: data/reference/reference.parquet
+      hash: md5
+      md5: c162f9f4ccd7ad59d095f74ac2333709
+      size: 2208435
+    - path: reports/data_prep_summary.json
+      hash: md5
+      md5: 6383699456d19d59a54aef2812f90bfd
+      size: 828
+  train:
+    cmd: python -m rental_price_mlops.modeling.train
+    deps:
+    - path: data/processed/train.parquet
+      hash: md5
+      md5: c162f9f4ccd7ad59d095f74ac2333709
+      size: 2208435
+    - path: data/processed/val.parquet
+      hash: md5
+      md5: 95afb5a22ef09b33dc6947fcf16d98d7
+      size: 550161
+    - path: rental_price_mlops/modeling/train.py
+      hash: md5
+      md5: aed5367e49bb655ae9c73fcf5b5e2642
+      size: 3023
+    outs:
+    - path: models/baseline_model.pkl
+      hash: md5
+      md5: a67334602f728fb26332947cdf5ae44c
+      size: 197031199
+    - path: reports/baseline_metrics.json
+      hash: md5
+      md5: 2341a1c7f4e0bb8fda24f3c7195d17e6
+      size: 207
