@@ -10,3 +10,12 @@ stages:
     - data/processed/val.parquet
     - data/reference/reference.parquet
     - reports/data_prep_summary.json
+  train:
+    cmd: python -m rental_price_mlops.modeling.train
+    deps:
+    - data/processed/train.parquet
+    - data/processed/val.parquet
+    - rental_price_mlops/modeling/train.py
+    outs:
+    - models/baseline_model.pkl
+    - reports/baseline_metrics.json
