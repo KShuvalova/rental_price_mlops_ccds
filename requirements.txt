@@ -4,6 +4,7 @@ loguru
 matplotlib
 notebook
 numpy
+dvc
 pandas
 pip
 pyarrow
