@@ -1,0 +1,12 @@
+stages:
+  prepare:
+    cmd: python -m rental_price_mlops.dataset
+    deps:
+    - data/raw/AB_NYC_2019.csv
+    - rental_price_mlops/dataset.py
+    outs:
+    - data/processed/test.parquet
+    - data/processed/train.parquet
+    - data/processed/val.parquet
+    - data/reference/reference.parquet
+    - reports/data_prep_summary.json
