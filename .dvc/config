@@ -1,4 +1,4 @@
 [core]
     remote = localstorage
 ['remote "localstorage"']
-    url = /Users/kseniashuvalova/Desktop/dvc_storage
+    url = /Volumes/ARCHIVE/dvc_storage
