@@ -99,3 +99,7 @@ data/processed/
 data/reference/
 reports/
 models/
+
+catboost_info/
+data/external/
+data/interim/
