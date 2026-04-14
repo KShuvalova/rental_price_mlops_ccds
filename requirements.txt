@@ -4,6 +4,7 @@ loguru
 matplotlib
 notebook
 numpy
+catboost
 dvc
 pandas
 pip
