@@ -48,8 +48,8 @@ def main():
     X_val = val_df[feature_cols].copy()
     y_val = val_df[target_col].copy()
 
-    categorical_cols = X_train.select_dtypes(include=["object"]).columns.tolist()
-    numeric_cols = X_train.select_dtypes(exclude=["object"]).columns.tolist()
+    categorical_cols = X_train.select_dtypes(include=["object", "string"]).columns.tolist()
+    numeric_cols = X_train.select_dtypes(exclude=["object", "string"]).columns.tolist()
 
     preprocessor = ColumnTransformer(
         transformers=[
