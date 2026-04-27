@@ -12,6 +12,9 @@ pyarrow
 pytest
 python-dotenv
 ruff
+mlflow
+fastapi
+uvicorn
 scikit-learn
 tqdm
 typer
