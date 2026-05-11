@@ -1,6 +1,5 @@
-from pathlib import Path
-import json
 from datetime import datetime, timezone
+import json
 
 from rental_price_mlops.config import PROJ_ROOT
 

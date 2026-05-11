@@ -1,11 +1,11 @@
 import json
 
+from catboost import CatBoostRegressor
 import mlflow
 import mlflow.catboost
+from mlflow.models import infer_signature
 import numpy as np
 import pandas as pd
-from catboost import CatBoostRegressor
-from mlflow.models import infer_signature
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
 from rental_price_mlops.config import PROJ_ROOT
