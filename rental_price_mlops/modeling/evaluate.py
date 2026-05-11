@@ -1,4 +1,3 @@
-from pathlib import Path
 import json
 import pickle
 
@@ -17,6 +16,10 @@ REPORTS_DIR.mkdir(parents=True, exist_ok=True)
 
 def rmse(y_true, y_pred):
     return np.sqrt(mean_squared_error(y_true, y_pred))
+
+
+def round_metrics(metrics: dict) -> dict:
+    return {k: round(float(v), 3) for k, v in metrics.items()}
 
 
 def main():
@@ -45,17 +48,19 @@ def main():
     test_pred_log = model.predict(X_test)
 
     metrics = {
-        "mae_log": float(mean_absolute_error(y_test, test_pred_log)),
-        "rmse_log": float(rmse(y_test, test_pred_log)),
-        "r2_log": float(r2_score(y_test, test_pred_log)),
+        "mae_log": mean_absolute_error(y_test, test_pred_log),
+        "rmse_log": rmse(y_test, test_pred_log),
+        "r2_log": r2_score(y_test, test_pred_log),
     }
 
     test_pred_price = np.expm1(test_pred_log)
     y_test_price = np.expm1(y_test)
 
-    metrics["mae_price"] = float(mean_absolute_error(y_test_price, test_pred_price))
-    metrics["rmse_price"] = float(rmse(y_test_price, test_pred_price))
-    metrics["r2_price"] = float(r2_score(y_test_price, test_pred_price))
+    metrics["mae_price"] = mean_absolute_error(y_test_price, test_pred_price)
+    metrics["rmse_price"] = rmse(y_test_price, test_pred_price)
+    metrics["r2_price"] = r2_score(y_test_price, test_pred_price)
+
+    metrics = round_metrics(metrics)
 
     predictions = test_df[["id", "price"]].copy()
     predictions["predicted_price"] = test_pred_price

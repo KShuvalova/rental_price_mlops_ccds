@@ -29,6 +29,10 @@ def rmse(y_true, y_pred):
     return np.sqrt(mean_squared_error(y_true, y_pred))
 
 
+def round_metrics(metrics: dict) -> dict:
+    return {k: round(float(v), 3) for k, v in metrics.items()}
+
+
 def main():
     train_df = pd.read_parquet(DATA_DIR / "train.parquet")
     val_df = pd.read_parquet(DATA_DIR / "val.parquet")
@@ -86,17 +90,19 @@ def main():
         val_pred_log = pipeline.predict(X_val)
 
         metrics = {
-            "mae_log": float(mean_absolute_error(y_val, val_pred_log)),
-            "rmse_log": float(rmse(y_val, val_pred_log)),
-            "r2_log": float(r2_score(y_val, val_pred_log)),
+            "mae_log": mean_absolute_error(y_val, val_pred_log),
+            "rmse_log": rmse(y_val, val_pred_log),
+            "r2_log": r2_score(y_val, val_pred_log),
         }
 
         val_pred_price = np.expm1(val_pred_log)
         y_val_price = np.expm1(y_val)
 
-        metrics["mae_price"] = float(mean_absolute_error(y_val_price, val_pred_price))
-        metrics["rmse_price"] = float(rmse(y_val_price, val_pred_price))
-        metrics["r2_price"] = float(r2_score(y_val_price, val_pred_price))
+        metrics["mae_price"] = mean_absolute_error(y_val_price, val_pred_price)
+        metrics["rmse_price"] = rmse(y_val_price, val_pred_price)
+        metrics["r2_price"] = r2_score(y_val_price, val_pred_price)
+
+        metrics = round_metrics(metrics)
 
         with open(MODELS_DIR / "baseline_model.pkl", "wb") as f:
             pickle.dump(pipeline, f)
