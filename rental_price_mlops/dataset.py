@@ -1,5 +1,6 @@
-from pathlib import Path
 import json
+from pathlib import Path
+
 import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
@@ -17,16 +18,14 @@ REPORTS_DIR.mkdir(parents=True, exist_ok=True)
 
 
 def build_stratify_key(df: pd.DataFrame) -> pd.Series:
-    price_bins = pd.qcut(
-        df["target"],
-        q=5,
-        duplicates="drop"
-    ).astype(str)
+    price_bins = pd.qcut(df["target"], q=5, duplicates="drop").astype(str)
 
     stratify_key = (
-        df["neighbourhood_group"].astype(str) + "__" +
-        df["room_type"].astype(str) + "__" +
-        price_bins
+        df["neighbourhood_group"].astype(str)
+        + "__"
+        + df["room_type"].astype(str)
+        + "__"
+        + price_bins
     )
 
     rare_keys = stratify_key.value_counts()
@@ -67,19 +66,13 @@ def main():
     stratify_key = build_stratify_key(df)
 
     train_df, temp_df = train_test_split(
-        df,
-        test_size=0.30,
-        random_state=RANDOM_STATE,
-        stratify=stratify_key
+        df, test_size=0.30, random_state=RANDOM_STATE, stratify=stratify_key
     )
 
     temp_stratify = build_stratify_key(temp_df)
 
     val_df, test_df = train_test_split(
-        temp_df,
-        test_size=0.50,
-        random_state=RANDOM_STATE,
-        stratify=temp_stratify
+        temp_df, test_size=0.50, random_state=RANDOM_STATE, stratify=temp_stratify
     )
 
     # Сохраняем сплиты
@@ -101,7 +94,7 @@ def main():
         "missing_after_cleaning": df.isna().sum().to_dict(),
         "target_column": "target",
         "business_target_column": "price",
-        "max_last_review_date": str(max_review_date.date()) if pd.notna(max_review_date) else None
+        "max_last_review_date": str(max_review_date.date()) if pd.notna(max_review_date) else None,
     }
 
     with open(REPORTS_DIR / "data_prep_summary.json", "w", encoding="utf-8") as f:

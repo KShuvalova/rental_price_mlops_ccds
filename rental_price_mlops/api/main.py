@@ -1,29 +1,27 @@
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, HTTPException, Query
-from fastapi.responses import JSONResponse
 
 from rental_price_mlops.api.schemas import (
+    LatestMetricsResponse,
+    ModelInfoResponse,
     PredictionRequest,
     PredictionResponse,
-    ModelInfoResponse,
     RetrainResponse,
-    LatestMetricsResponse,
+)
+from rental_price_mlops.api.service import (
+    FEATURES_EXPECTED,
+    MODEL_NAME,
+    MODEL_PATH,
+    load_model,
+    predict,
+    read_latest_metrics,
+    retrain_model,
 )
 from rental_price_mlops.api.storage import (
     append_prediction_log,
     read_prediction_logs,
     utc_now_iso,
-)
-from rental_price_mlops.api.service import (
-    load_model,
-    predict,
-    read_latest_metrics,
-    retrain_model,
-    MODEL_NAME,
-    MODEL_VERSION,
-    MODEL_PATH,
-    FEATURES_EXPECTED,
 )
 
 
