@@ -15,7 +15,9 @@ ruff
 mlflow
 fastapi
 uvicorn
+prometheus-client
 scikit-learn
 tqdm
+prometheus-client
 typer
 -e .

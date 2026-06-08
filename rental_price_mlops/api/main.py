@@ -1,6 +1,7 @@
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, HTTPException, Query
+from prometheus_client import make_asgi_app
 
 from rental_price_mlops.api.schemas import (
     LatestMetricsResponse,
@@ -23,11 +24,18 @@ from rental_price_mlops.api.storage import (
     read_prediction_logs,
     utc_now_iso,
 )
+from rental_price_mlops.monitoring.metrics import (
+    MetricsMiddleware,
+    PREDICT_COUNT,
+    RETRAIN_COUNT,
+    update_drift_metrics,
+)
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     app.state.model = load_model()
+    update_drift_metrics()
     yield
 
 
@@ -37,6 +45,10 @@ app = FastAPI(
     version="0.1.0",
     lifespan=lifespan,
 )
+
+app.add_middleware(MetricsMiddleware)
+metrics_app = make_asgi_app()
+app.mount("/metrics", metrics_app)
 
 
 @app.get("/health")
@@ -56,6 +68,8 @@ def model_info():
 
 @app.post("/predict", response_model=PredictionResponse)
 def predict_endpoint(payload: PredictionRequest):
+    PREDICT_COUNT.inc()
+
     try:
         result = predict(app.state.model, payload.model_dump())
     except Exception as e:
@@ -79,10 +93,13 @@ def get_predictions(limit: int = Query(default=20, ge=1, le=200)):
 
 @app.post("/retrain", response_model=RetrainResponse)
 def retrain():
+    RETRAIN_COUNT.inc()
+
     status, message = retrain_model()
 
     if status == "success":
         app.state.model = load_model()
+        update_drift_metrics()
         return RetrainResponse(status=status, message=message)
 
     raise HTTPException(status_code=500, detail=message)
@@ -90,6 +107,7 @@ def retrain():
 
 @app.get("/metrics/latest", response_model=LatestMetricsResponse)
 def latest_metrics():
+    update_drift_metrics()
     return LatestMetricsResponse(
         source="reports/baseline_metrics.json",
         metrics=read_latest_metrics(),
