@@ -272,45 +272,6 @@ docker-compose up
 
 ---
 
-## Что уже реализовано
-
-### ML и инференс
-
-* baseline-модель Random Forest
-* альтернативная модель CatBoost
-* API для предсказания цены аренды
-* сохранение логов предсказаний
-
-### Мониторинг
-
-* reference dataset и current dataset
-* расчет data drift
-* расчет target drift
-* concept drift proxy
-* генерация drift report в JSON и HTML
-* экспорт метрик в Prometheus
-* dashboard в Grafana
-
-### UI
-
-* Inference
-* Predictions
-* Monitoring
-* Retrain
-* Experiments
-
----
-
-## Планы развития
-
-* доработка README и эксплуатационных инструкций
-* развертывание в Kubernetes / Minikube
-* GitOps/CD через Argo CD
-* расширение UI и уведомлений о drift
-* более детальная визуализация экспериментов
-
----
-
 ## Автор
 
 Kseniya Shuvalova
