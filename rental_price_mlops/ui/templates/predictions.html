@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero">
+    <h1>Recent Predictions</h1>
+    <p class="subtitle">
+        Последние предсказания сервиса с основными параметрами и результатом модели.
+    </p>
+</section>
+
+<section class="card">
+    <h2>Predictions Table</h2>
+
+    {% if items and items|length > 0 %}
+    <div class="table-wrapper">
+        <table class="predictions-table">
+            <thead>
+                <tr>
+                    <th>Timestamp</th>
+                    <th>Predicted price</th>
+                    <th>Model</th>
+                    <th>Version</th>
+                    <th>Neighbourhood group</th>
+                    <th>Neighbourhood</th>
+                    <th>Room type</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <td>{{ item.timestamp }}</td>
+                    <td>{{ item.predicted_price }}</td>
+                    <td>{{ item.model_name }}</td>
+                    <td>{{ item.model_version }}</td>
+                    <td>{{ item.request_data.neighbourhood_group if item.request_data else '' }}</td>
+                    <td>{{ item.request_data.neighbourhood if item.request_data else '' }}</td>
+                    <td>{{ item.request_data.room_type if item.request_data else '' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p class="empty-state">Пока предсказаний нет.</p>
+    {% endif %}
+</section>
+{% endblock %}

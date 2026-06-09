@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero">
+    <h1>Experiments</h1>
+    <p class="subtitle">
+        Сводка по моделям, метрикам и экспериментальным артефактам.
+    </p>
+</section>
+
+<section class="metrics-grid">
+    <div class="metric-card">
+        <div class="metric-label">Primary model</div>
+        <div class="metric-value small-metric">{{ primary_model }}</div>
+    </div>
+
+    <div class="metric-card">
+        <div class="metric-label">Available model files</div>
+        <div class="metric-value">{{ available_models|length }}</div>
+    </div>
+
+    <div class="metric-card">
+        <div class="metric-label">Metric reports found</div>
+        <div class="metric-value">{{ available_reports|length }}</div>
+    </div>
+
+    <div class="metric-card">
+        <div class="metric-label">MLflow</div>
+        <div class="metric-value small-metric">
+            <a href="{{ mlflow_url }}" target="_blank" class="metric-link">Open</a>
+        </div>
+    </div>
+</section>
+
+<section class="card">
+    <h2>Available Models</h2>
+
+    {% if available_models %}
+    <div class="table-wrapper">
+        <table class="predictions-table">
+            <thead>
+                <tr>
+                    <th>File</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in available_models %}
+                <tr>
+                    <td>{{ item }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p class="empty-state">Model files not found.</p>
+    {% endif %}
+</section>
+
+<section class="card">
+    <h2>Metric Reports</h2>
+
+    {% if available_reports %}
+    <div class="table-wrapper">
+        <table class="predictions-table">
+            <thead>
+                <tr>
+                    <th>Report</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in available_reports %}
+                <tr>
+                    <td>{{ item }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p class="empty-state">Metric reports not found.</p>
+    {% endif %}
+</section>
+
+<section class="section-grid">
+    <div class="card">
+        <h2>Baseline Metrics</h2>
+        {% if baseline_metrics %}
+        <div class="table-wrapper">
+            <table class="predictions-table">
+                <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for key, value in baseline_metrics.items() %}
+                    <tr>
+                        <td>{{ key }}</td>
+                        <td>{{ value }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="empty-state">baseline_metrics.json not found.</p>
+        {% endif %}
+    </div>
+
+    <div class="card">
+        <h2>Test Metrics</h2>
+        {% if test_metrics %}
+        <div class="table-wrapper">
+            <table class="predictions-table">
+                <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for key, value in test_metrics.items() %}
+                    <tr>
+                        <td>{{ key }}</td>
+                        <td>{{ value }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="empty-state">test_metrics.json not found.</p>
+        {% endif %}
+    </div>
+</section>
+
+<section class="card">
+    <h2>CatBoost Metrics</h2>
+    {% if catboost_metrics %}
+    <div class="table-wrapper">
+        <table class="predictions-table">
+            <thead>
+                <tr>
+                    <th>Metric</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for key, value in catboost_metrics.items() %}
+                <tr>
+                    <td>{{ key }}</td>
+                    <td>{{ value }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p class="empty-state">catboost_metrics.json not found.</p>
+    {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,191 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero">
+    <h1>Rental Price Monitoring UI</h1>
+    <p class="subtitle">
+        Интерфейс для прогноза цены, просмотра последних предсказаний,
+        мониторинга drift и управления моделью.
+    </p>
+</section>
+
+<section class="card form-card">
+    <h2>Inference</h2>
+
+    {% if error %}
+    <div class="alert alert-error">
+        {{ error }}
+    </div>
+    {% endif %}
+
+    <form method="post" action="/" class="inference-form">
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="neighbourhood_group">Neighbourhood group</label>
+                <input
+                    type="text"
+                    id="neighbourhood_group"
+                    name="neighbourhood_group"
+                    value="{{ form_data.neighbourhood_group if form_data else 'Manhattan' }}"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="neighbourhood">Neighbourhood</label>
+                <input
+                    type="text"
+                    id="neighbourhood"
+                    name="neighbourhood"
+                    value="{{ form_data.neighbourhood if form_data else 'Harlem' }}"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="latitude">Latitude</label>
+                <input
+                    type="number"
+                    step="0.00001"
+                    id="latitude"
+                    name="latitude"
+                    value="{{ form_data.latitude if form_data else 40.80902 }}"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="longitude">Longitude</label>
+                <input
+                    type="number"
+                    step="0.00001"
+                    id="longitude"
+                    name="longitude"
+                    value="{{ form_data.longitude if form_data else -73.94190 }}"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="room_type">Room type</label>
+                {% set selected_room = form_data.room_type if form_data else 'Private room' %}
+                <select id="room_type" name="room_type" required>
+                    <option value="Entire home/apt" {% if selected_room == 'Entire home/apt' %}selected{% endif %}>Entire home/apt</option>
+                    <option value="Private room" {% if selected_room == 'Private room' %}selected{% endif %}>Private room</option>
+                    <option value="Shared room" {% if selected_room == 'Shared room' %}selected{% endif %}>Shared room</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="minimum_nights">Minimum nights</label>
+                <input
+                    type="number"
+                    id="minimum_nights"
+                    name="minimum_nights"
+                    value="{{ form_data.minimum_nights if form_data else 3 }}"
+                    min="1"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="number_of_reviews">Number of reviews</label>
+                <input
+                    type="number"
+                    id="number_of_reviews"
+                    name="number_of_reviews"
+                    value="{{ form_data.number_of_reviews if form_data else 0 }}"
+                    min="0"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="reviews_per_month">Reviews per month</label>
+                <input
+                    type="number"
+                    step="0.01"
+                    id="reviews_per_month"
+                    name="reviews_per_month"
+                    value="{{ form_data.reviews_per_month if form_data else 0 }}"
+                    min="0"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="calculated_host_listings_count">Host listings count</label>
+                <input
+                    type="number"
+                    id="calculated_host_listings_count"
+                    name="calculated_host_listings_count"
+                    value="{{ form_data.calculated_host_listings_count if form_data else 1 }}"
+                    min="1"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="availability_365">Availability 365</label>
+                <input
+                    type="number"
+                    id="availability_365"
+                    name="availability_365"
+                    value="{{ form_data.availability_365 if form_data else 365 }}"
+                    min="0"
+                    max="365"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="days_since_last_review">Days since last review</label>
+                <input
+                    type="number"
+                    id="days_since_last_review"
+                    name="days_since_last_review"
+                    value="{{ form_data.days_since_last_review if form_data else -1 }}"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="has_last_review">Has last review</label>
+                {% set selected_review = form_data.has_last_review if form_data else 0 %}
+                <select id="has_last_review" name="has_last_review" required>
+                    <option value="0" {% if selected_review|int == 0 %}selected{% endif %}>0</option>
+                    <option value="1" {% if selected_review|int == 1 %}selected{% endif %}>1</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button type="submit" class="btn btn-primary">Get prediction</button>
+        </div>
+    </form>
+</section>
+
+{% if prediction %}
+<section class="result-grid">
+    <div class="result-card">
+        <div class="result-label">Predicted price</div>
+        <div class="result-value">{{ prediction.predicted_price }}</div>
+    </div>
+
+    <div class="result-card">
+        <div class="result-label">Predicted log price</div>
+        <div class="result-value">{{ prediction.predicted_log_price }}</div>
+    </div>
+
+    <div class="result-card">
+        <div class="result-label">Model</div>
+        <div class="result-value small">{{ prediction.model_name }}</div>
+    </div>
+
+    <div class="result-card">
+        <div class="result-label">Version</div>
+        <div class="result-value small">{{ prediction.model_version }}</div>
+    </div>
+</section>
+{% endif %}
+{% endblock %}

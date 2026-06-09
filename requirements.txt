@@ -19,5 +19,6 @@ prometheus-client
 scikit-learn
 tqdm
 prometheus-client
+python-multipart
 typer
 -e .

@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero">
+    <h1>Monitoring</h1>
+    <p class="subtitle">
+        Текущие drift-флаги и метрики качества модели.
+    </p>
+</section>
+
+{% if retrain_message %}
+<div class="alert {% if retrain_status == 'success' %}alert-success{% else %}alert-error{% endif %}">
+    {{ retrain_message }}
+</div>
+{% endif %}
+
+{% if monitoring %}
+<section class="metrics-grid">
+    <div class="metric-card">
+        <div class="metric-label">Drifted features count</div>
+        <div class="metric-value">{{ monitoring.summary.drifted_features_count }}</div>
+    </div>
+
+    <div class="metric-card">
+        <div class="metric-label">Target drift flag</div>
+        <div class="metric-value">{{ monitoring.summary.target_drift_flag }}</div>
+    </div>
+
+    <div class="metric-card">
+        <div class="metric-label">Target drift log flag</div>
+        <div class="metric-value">{{ monitoring.summary.target_drift_log_flag }}</div>
+    </div>
+
+    <div class="metric-card">
+        <div class="metric-label">Concept drift flag</div>
+        <div class="metric-value">{{ monitoring.summary.concept_drift_flag }}</div>
+    </div>
+
+    <div class="metric-card">
+        <div class="metric-label">Current rows</div>
+        <div class="metric-value">{{ monitoring.current_rows }}</div>
+    </div>
+
+    <div class="metric-card">
+        <div class="metric-label">Current MAE</div>
+        <div class="metric-value">{{ monitoring.prediction_summary.current_mae if monitoring.prediction_summary else '' }}</div>
+    </div>
+
+    <div class="metric-card">
+        <div class="metric-label">Current RMSE</div>
+        <div class="metric-value">{{ monitoring.prediction_summary.current_rmse if monitoring.prediction_summary else '' }}</div>
+    </div>
+
+    <div class="metric-card">
+        <div class="metric-label">Current MAPE</div>
+        <div class="metric-value">{{ monitoring.prediction_summary.current_mape if monitoring.prediction_summary else '' }}</div>
+    </div>
+</section>
+
+<section class="card action-card">
+    <h2>Model Control</h2>
+    <p class="subtitle small-subtitle">
+        Ручной запуск переобучения модели через UI.
+    </p>
+
+    <form method="post" action="/retrain-ui">
+        <button type="submit" class="btn btn-primary">Run retrain</button>
+    </form>
+</section>
+
+<section class="card">
+    <h2>Drifted Features</h2>
+
+    {% if monitoring.summary.drifted_features %}
+    <div class="table-wrapper">
+        <table class="predictions-table">
+            <thead>
+                <tr>
+                    <th>Feature</th>
+                    <th>Type</th>
+                    <th>Drift score</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in monitoring.summary.drifted_features %}
+                <tr>
+                    <td>{{ item.feature }}</td>
+                    <td>{{ item.type }}</td>
+                    <td>{{ item.drift_score }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p class="empty-state">Drifted features not detected.</p>
+    {% endif %}
+</section>
+{% else %}
+<section class="card">
+    <h2>Monitoring</h2>
+    <p class="empty-state">Monitoring report not found.</p>
+</section>
+{% endif %}
+{% endblock %}

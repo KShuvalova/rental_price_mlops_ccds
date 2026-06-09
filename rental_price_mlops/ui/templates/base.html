@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ title if title else "Rental Price UI" }}</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+    <header class="topbar">
+        <div class="container topbar-inner">
+            <div class="brand">Rental Price MLOps</div>
+            <nav class="nav">
+                <a href="/">Inference</a>
+                <a href="/predictions-ui">Predictions</a>
+                <a href="/monitoring-ui">Monitoring</a>
+                <a href="/experiments-ui">Experiments</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container page-content">
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>
