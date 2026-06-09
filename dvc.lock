@@ -9,25 +9,25 @@ stages:
       size: 7077973
     - path: rental_price_mlops/dataset.py
       hash: md5
-      md5: c71758f2ec5ba65274fd7542faa6bdd9
-      size: 3735
+      md5: 39b28101c32cc862ad319a80dc812849
+      size: 3675
     outs:
     - path: data/processed/test.parquet
       hash: md5
-      md5: 7710d01a9ae19ab406c985975a366350
-      size: 543043
+      md5: a9f55b4087e992b5af539e7760425207
+      size: 544124
     - path: data/processed/train.parquet
       hash: md5
-      md5: c162f9f4ccd7ad59d095f74ac2333709
-      size: 2208435
+      md5: 5a710d83051389af1e7e16d453f7ea0f
+      size: 2210072
     - path: data/processed/val.parquet
       hash: md5
-      md5: 95afb5a22ef09b33dc6947fcf16d98d7
-      size: 550161
+      md5: 658dcec6b9374bb934f5e49a93e04f16
+      size: 550984
     - path: data/reference/reference.parquet
       hash: md5
-      md5: c162f9f4ccd7ad59d095f74ac2333709
-      size: 2208435
+      md5: 5a710d83051389af1e7e16d453f7ea0f
+      size: 2210072
     - path: reports/data_prep_summary.json
       hash: md5
       md5: 6383699456d19d59a54aef2812f90bfd
@@ -37,22 +37,22 @@ stages:
     deps:
     - path: data/processed/train.parquet
       hash: md5
-      md5: c162f9f4ccd7ad59d095f74ac2333709
-      size: 2208435
+      md5: 5a710d83051389af1e7e16d453f7ea0f
+      size: 2210072
     - path: data/processed/val.parquet
       hash: md5
-      md5: 95afb5a22ef09b33dc6947fcf16d98d7
-      size: 550161
+      md5: 658dcec6b9374bb934f5e49a93e04f16
+      size: 550984
     - path: rental_price_mlops/modeling/train.py
       hash: md5
-      md5: aed5367e49bb655ae9c73fcf5b5e2642
-      size: 3023
+      md5: c11d857fff5c9ab7b0af3e0275307d64
+      size: 4669
     outs:
     - path: models/baseline_model.pkl
       hash: md5
-      md5: a67334602f728fb26332947cdf5ae44c
-      size: 197031199
+      md5: f137fc86574d18396a61f8495d2fe295
+      size: 197030797
     - path: reports/baseline_metrics.json
       hash: md5
-      md5: 2341a1c7f4e0bb8fda24f3c7195d17e6
-      size: 207
+      md5: 21ee94d726363fa6285aef16c3013142
+      size: 130
