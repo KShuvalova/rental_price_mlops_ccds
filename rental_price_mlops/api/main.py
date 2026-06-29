@@ -1,4 +1,5 @@
 from contextlib import asynccontextmanager
+import json
 from pathlib import Path
 
 from fastapi import FastAPI, Form, HTTPException, Query, Request
@@ -6,7 +7,6 @@ from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from prometheus_client import make_asgi_app
-import json
 
 from rental_price_mlops.api.schemas import (
     LatestMetricsResponse,
@@ -30,9 +30,9 @@ from rental_price_mlops.api.storage import (
     utc_now_iso,
 )
 from rental_price_mlops.monitoring.metrics import (
-    MetricsMiddleware,
     PREDICT_COUNT,
     RETRAIN_COUNT,
+    MetricsMiddleware,
     update_drift_metrics,
 )
 

@@ -1,5 +1,5 @@
-import json
 from html import escape
+import json
 
 import numpy as np
 import pandas as pd

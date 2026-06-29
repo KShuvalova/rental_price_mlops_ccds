@@ -1,7 +1,7 @@
-import json
-import shutil
 from collections import Counter
 from datetime import datetime
+import json
+import shutil
 
 from rental_price_mlops.api.service import FEATURES_EXPECTED
 from rental_price_mlops.config import PROJ_ROOT
