@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rental-api
+  namespace: rental-mlops
+  labels:
+    app: rental-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rental-api
+  template:
+    metadata:
+      labels:
+        app: rental-api
+    spec:
+      containers:
+        - name: rental-api
+          image: rental_price_mlops_ccds-api:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
+          env:
+            - name: MLFLOW_TRACKING_URI
+              value: "http://host.minikube.internal:5000"
+          volumeMounts:
+            - name: models-volume
+              mountPath: /app/models
+            - name: data-volume
+              mountPath: /app/data
+            - name: reports-volume
+              mountPath: /app/reports
+            - name: logs-volume
+              mountPath: /app/logs
+      volumes:
+        - name: models-volume
+          hostPath:
+            path: /mnt/rental_price_mlops_ccds/models
+            type: Directory
+        - name: data-volume
+          hostPath:
+            path: /mnt/rental_price_mlops_ccds/data
+            type: Directory
+        - name: reports-volume
+          hostPath:
+            path: /mnt/rental_price_mlops_ccds/reports
+            type: Directory
+        - name: logs-volume
+          hostPath:
+            path: /mnt/rental_price_mlops_ccds/logs
+            type: DirectoryOrCreate

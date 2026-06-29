@@ -1,13 +1,15 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: rental-api-service
+  name: rental-api
   namespace: rental-mlops
+  labels:
+    app: rental-api
 spec:
+  type: ClusterIP
   selector:
     app: rental-api
   ports:
-    - protocol: TCP
+    - name: http
       port: 8000
       targetPort: 8000
-  type: NodePort
